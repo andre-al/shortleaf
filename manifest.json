@@ -1,0 +1,24 @@
+{
+  "name": "Shortleaf",
+  "description": "Custom keyboard shortcuts for Overleaf.",
+  "version": "0.1",
+  "manifest_version": 3,
+  "background": {
+      "service_worker": "default_config.js"
+  },
+  "content_scripts": [{
+    "matches": ["https://*.overleaf.com/project/*"],
+    "js": ["content-script.js"]
+  }],
+  "web_accessible_resources": [ {
+    "resources": ["shortleaf.js", "popup.js", "options.js", "options.css", "default_config.js"],
+    "matches": ["<all_urls>"]
+  } ],
+  "permissions": [
+    "storage"
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

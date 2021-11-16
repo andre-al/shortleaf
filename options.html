@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Shortleaf options</title>
+  <script src='/default_config.js'></script>
+  <script src='/options.js'></script>
+  <link rel="stylesheet" href="/options.css">
+</head>
+<body>
+
+<!-- <center> -->
+<span class='panel'>
+
+
+<br>
+
+<center><p style='font-size: 16px'>Set your overleaf shortcuts</p></center>
+<!-- <center> -->
+<span id='symbols_toggle', class='toggle'>&#x25B6; Symbols</span>
+<span id='symbols' class='collapsable' style='display: none'>
+<br>
+<p>Symbols are commands without arguments that are inserted when the shortcut keys are pressed.</p>
+<p>(Name / Command / Shortcut)</p>
+<br>
+</span>
+
+<br>
+<span id='commands_toggle', class='toggle'>&#x25B6; Commands</span>
+<div id='commands' class='collapsable' style='display: none'>
+<br>
+<p>Commands are latex functions with arguments that are inserted when the shortcut keys are pressed. 
+The smart insertion is aware of selections and will treat them as the first argument, encasing it inside the first auto-detected { brackets }. 
+If no selection is present but you're at the begging of a word, the same will happen with that word.
+Your cursor will be set to the end of the selection / inside of the first argument.</p> <br>
+(Name / Command / Shortcut) </br><br>
+</div>
+
+<br>
+<span id='left_rights_toggle', class='toggle'>&#x25B6; Left-right's</span>
+<div id='left_rights' class='collapsable' style='display: none'>
+<br>
+<p>Left-right's use the same smart insertion as commands, but with custom specified left and right parts of the command.</p> <br>
+(Name / Left / Right / Shortcut) <br><br>
+</div>
+
+<br>
+<span id='envs_toggle', class='toggle'>&#x25B6; Environments</span>
+<div id='envs' class='collapsable' style='display: none'>
+<br>
+<p>Smart insertion of enviroments.</p> <br>
+(Name / Environment / Shortcut) <br><br>
+</div>
+
+</span>
+
+
+<span id='footer' class='panel'>
+<center>
+<p>Please note you need to reload your open Overleaf tabs for any changes to take effect.</p>
+<p>This page can be opened again later by clicking the extension's icon.</p>
+<button type='button' id='reset_config'>Reset to defaults</button>
+<br>
+</center>
+</span>
+
+</body>
+</html>

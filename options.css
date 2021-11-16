@@ -1,0 +1,84 @@
+body {
+	background-color: #138A48;
+	display: flex;
+	flex-direction: column;
+    place-items: center;
+}
+
+.panel {
+	padding: 20px;
+	width: min(80%, 800px);
+	min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+	padding: 0px;
+	background-color: #FFFFFF;
+}
+
+.panel#footer {
+	min-height: 106px;
+}
+
+.toggle {
+	font-size: 18px;
+	margin-left: 10%;
+	cursor: pointer;
+}
+
+.collapsable {
+	margin: 0 10%;
+	width: 80%;
+	flex-direction: column;
+	justify-content: center;
+	place-items: center;
+	/* width: 80%; */
+	/* margin: 0 auto; */
+}
+
+.blank{
+	margin: 0 20px; 
+}
+
+.remover{
+	cursor: pointer;
+	margin: 0 20px; 
+}
+
+hr {
+	width: 98%
+}
+
+button {
+	width: 100px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+form {
+	margin: 2px;
+}
+
+#symbols > form > input {
+	width: 100px;
+}
+
+#commands > form > input {
+	width: 120px;
+}
+
+#left_rights > form > input {
+	width: 120px;
+}
+
+#envs > form > input {
+	width: 100px;
+}
+
+#reset_config {
+	width: 120px;
+	height: 26px;
+	/* position: absolute; */
+	/* bottom: 50px; */
+	/* clear: both; */
+}
