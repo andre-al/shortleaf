@@ -1,24 +1,56 @@
 // Get loaded Ace Editor
 // var editor = (document.querySelectorAll(".ace_editor")[0]).env.editor;
-let editor = document.getElementsByClassName("ace_editor")[0].env.editor;
+//let editor = document.getElementsByClassName("ace_editor")[0].env.editor;
 
-// Binds a function to a key shortcut. General function to be used by other specialized binding functions.
-function bind_function(func, shortcut, name){
-  editor.commands.addCommand({
-    name: name,
-    bindKey: {win: shortcut, mac: shortcut.replace("Ctrl","Command") },
-    exec: func,
-    readOnly: false
-  });
+
+// Get loaded CodeMirror editor view
+let view = document.querySelector('.cm-editor').querySelector(".cm-content").cmView.view
+
+// Identify object corresponding to keymap from config facets by the 'key' property
+let keymap;
+let facets = view.state.config.facets;
+facets_loop:
+  for (i of Object.keys(facets)){
+    let fcts = facets[i];
+    for (fct of fcts.values()){
+      if( Array.isArray( fct.value )){
+        for ( ff of fct.value ){
+          if( Object.keys( ff ).includes('key') ){
+            keymap = fct.facet;
+            break facets_loop;
+          };
+        };
+      };
+    };
+  };
+
+
+// Define new compartment to hold keybindings by finding an old compartment,
+let old_compartment = view.state.config.compartments.keys().next();
+// Compartmenting an empty set of keymaps using the .of method of the old compartment
+let kb_compartment = old_compartment.value.of( keymap.of([]) );
+// And using the compartment constructor method to assign this task to a new compartment
+kb_compartment.compartment =  new old_compartment.value.constructor;
+
+view.state.config.base.push( kb_compartment );
+kb_compartment = kb_compartment.compartment
+view.dispatch( { effects: [ kb_compartment.reconfigure( keymap.of([]) ) ] } );
+
+let shortcuts = []
+
+// Prebinds a function to a key shortcut. General function to be used by other specialized binding functions.
+function bind_function(shortcut, func){
+  shortcuts.push( {key: shortcut, mac: shortcut.replace("Ctrl","Mod"), run: func} )
 };
 
 // Bind a symbol
-function bind_symbol(symbol, shortcut, name){
+function bind_symbol(shortcut, symbol){
   bind_function( 
-    function(){ editor.insert(symbol) } ,
-    shortcut, name
+    shortcut,
+	function(){ view.dispatch( view.state.replaceSelection(symbol) ); }
   );
 };
+//
 
 // Bind an expression with left and right half, aware of selected content in the middle.
 function bind_left_right(left, right, shortcut, name){
@@ -66,7 +98,7 @@ function bind_environment(environment, shortcut, name){
 
 function load_symbols( symbols ){
   for (s of symbols){
-    bind_symbol( s.command, s.shortcut, s.name );
+    bind_symbol( s.shortcut, s.command );
   };
 };
 
@@ -90,9 +122,12 @@ function load_envs( environments ){
 
 function load_config( shortleaf_config ){
 	load_symbols( shortleaf_config.symbols );
-	load_left_rights( shortleaf_config.left_rights );
-	load_commands( shortleaf_config.commands );
-	load_envs( shortleaf_config.environments );
+	// load_left_rights( shortleaf_config.left_rights );
+	// load_commands( shortleaf_config.commands );
+	// load_envs( shortleaf_config.environments );
+	
+	view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})
+	console.log('Loaded config')
 };
 
 document.addEventListener('shortleaf_config_send', function (e) {

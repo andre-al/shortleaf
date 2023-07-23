@@ -1,9 +1,10 @@
 // Injects 'shortleaf.js' and configs into the page
 // Necessary because a content script has no access to the page environment, with the Ace Editor instance.
 
-window.addEventListener('load', () => {
+window.addEventListener('load', function(){
   if (location=='https://www.overleaf.com/project') return; // Don't load on the project selection page
   
+  setTimeout( function(){
   console.log("Loading Shortleaf")
   var s = document.createElement('script');
   s.src = chrome.runtime.getURL('shortleaf.js');
@@ -11,6 +12,7 @@ window.addEventListener('load', () => {
     this.remove();
   };
   (document.head || document.documentElement).appendChild(s);
+  }, 10000) 
 });
 
 
