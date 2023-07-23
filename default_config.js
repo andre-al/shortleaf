@@ -41,14 +41,18 @@ var shortleaf_default_config = {
 		{"command": "\\infty"		, "shortcut": "Alt-8" }
 	],
 	"commands": [
-		{"name": "Square root"	, "command": "\\sqrt{}"		, "shortcut": "Ctrl-2" },
-		{"name": "Fraction"		, "command": "\\frac{}{}"	, "shortcut": "Ctrl-\\" },
-		{"name": "Subscript"	, "command": "_{}"			, "shortcut": "Ctrl--" },
-		{"name": "Superscript"	, "command": "^{}"			, "shortcut": "Ctrl-6" },
-		{"name": "Dot"			, "command": "\\dot{}"		, "shortcut": "Ctrl-Shift-." },
-		{"name": "Hat"			, "command": "\\hat{}"		, "shortcut": "Ctrl-Shift-6" }
+		{"command": "\\sqrt{}"		, "shortcut": "Ctrl-2" },
+		{"command": "\\frac{}{}"	, "shortcut": "Ctrl-\\" },
+		{"command": "_{}"			, "shortcut": "Ctrl--" },
+		{"command": "^{}"			, "shortcut": "Ctrl-6" },
+		{"command": "\\dot{}"		, "shortcut": "Ctrl-Shift-." },
+		{"command": "\\hat{}"		, "shortcut": "Ctrl-Shift-6" }
 	],
 	"left_rights": [
+		{"left": "\\left("	, "right": "\\right)"	, "shortcut": "Alt-9" },
+		{"left": "``"		, "right": "''"			, "shortcut": "Alt-`" },
+	],
+	"left_rights1": [
 		{"name": "Parenthesis"		, "left": "("		, "right": ")"			, "shortcut": "(" },
 		{"name": "\\ parenthesis"	, "left": "\\left("	, "right": "\\right)"	, "shortcut": "Ctrl-9" },
 		{"name": "Single quotes"	, "left": "'"		, "right": "'" 			, "shortcut": "'" },

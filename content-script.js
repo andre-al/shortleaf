@@ -4,15 +4,23 @@
 window.addEventListener('load', function(){
   if (location=='https://www.overleaf.com/project') return; // Don't load on the project selection page
   
-  setTimeout( function(){
-  console.log("Loading Shortleaf")
-  var s = document.createElement('script');
-  s.src = chrome.runtime.getURL('shortleaf.js');
-  s.onload = function() {
-    this.remove();
-  };
-  (document.head || document.documentElement).appendChild(s);
-  }, 10000) 
+  let load_func; 
+  
+  load_func = function(){
+    if( document.querySelector('.loading-screen') === null ){
+	  console.log("Loading Shortleaf")
+      var s = document.createElement('script');
+      s.src = chrome.runtime.getURL('shortleaf.js');
+      s.onload = function() {
+        this.remove();
+      };
+      (document.head || document.documentElement).appendChild(s);
+	} else {
+      setTimeout( load_func, 1000 )
+	}
+  }
+  
+  load_func();
 });
 
 

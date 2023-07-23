@@ -31,6 +31,7 @@ let old_compartment = view.state.config.compartments.keys().next();
 let kb_compartment = old_compartment.value.of( keymap.of([]) );
 // And using the compartment constructor method to assign this task to a new compartment
 kb_compartment.compartment =  new old_compartment.value.constructor;
+delete old_compartment
 
 view.state.config.base.push( kb_compartment );
 kb_compartment = kb_compartment.compartment
@@ -53,10 +54,16 @@ function bind_symbol(shortcut, symbol){
 //
 
 // Bind an expression with left and right half, aware of selected content in the middle.
-function bind_left_right(left, right, shortcut, name){
+function bind_left_right(shortcut, left, right){
   bind_function( 
+	shortcut,
     function(){
-	  let cursor_pos = editor.getCursorPosition();
+	  let selected_text = view.state.sliceDoc( view.state.selection.main.from, view.state.selection.main.to );
+	  
+	  view.dispatch( view.state.replaceSelection( left + selected_text + right ) );
+	  
+	  
+/* 	  let cursor_pos = editor.getCursorPosition();
 	  
 	  let empty_selection = editor.selection.isEmpty();
 	  if ( empty_selection ){ // If selection is empty, (...)
@@ -76,23 +83,22 @@ function bind_left_right(left, right, shortcut, name){
 	  // // Restore cursor position to between left and right content if there was no selection.
 	  // if( empty_selection ) { 
 	  editor.moveCursorToPosition( cursor_pos ); 
-	  // };
-	}, 
-    shortcut, name
+	  // }; */
+	}
   );
 };
 
 // Bind a LaTeX command, like \srqt{}, separating left-right at the first { } or [ ] automatically.
-function bind_command(command, shortcut, name){
+function bind_command( shortcut, command ){
   // Regular expression to find the position of the first [ or { in command
   let argpos = command.search("[\[{]");
   let left = command.substring(0,argpos+1);
   let right = command.substring(argpos+1);
-  bind_left_right(left, right, shortcut, name);
+  bind_left_right(shortcut,left, right);
 };
 
-function bind_environment(environment, shortcut, name){
-  bind_left_right("\\begin{"+environment+"}\n\t", "\n\\end{"+environment+"}\n", shortcut, name);
+function bind_environment( shortcut, environment){
+  bind_left_right( shortcut, "\\begin{"+environment+"}\n\t", "\n\\end{"+environment+"}\n" );
 };
 
 
@@ -104,30 +110,29 @@ function load_symbols( symbols ){
 
 function load_left_rights( left_rights ){
   for (lr of left_rights){
-    bind_left_right( lr.left, lr.right, lr.shortcut, lr.name );
+    bind_left_right( lr.shortcut, lr.left, lr.right );
   };
 };
 
 function load_commands( commands ){
   for (c of commands){
-    bind_command( c.command, c.shortcut, c.name );
+    bind_command( c.shortcut, c.command );
   };
 };
 
 function load_envs( environments ){
   for (e of environments){
-    bind_environment( e.env, e.shortcut, e.name );
+    bind_environment( e.shortcut, e.env );
   };
 };
 
 function load_config( shortleaf_config ){
 	load_symbols( shortleaf_config.symbols );
-	// load_left_rights( shortleaf_config.left_rights );
-	// load_commands( shortleaf_config.commands );
-	// load_envs( shortleaf_config.environments );
+	load_left_rights( shortleaf_config.left_rights );
+	load_commands( shortleaf_config.commands );
+	load_envs( shortleaf_config.environments );
 	
 	view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})
-	console.log('Loaded config')
 };
 
 document.addEventListener('shortleaf_config_send', function (e) {
