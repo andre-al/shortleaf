@@ -48,57 +48,91 @@ function bind_function(shortcut, func){
 function bind_symbol(shortcut, symbol){
   bind_function( 
     shortcut,
-	function(){ view.dispatch( view.state.replaceSelection(symbol) ); }
-  );
-};
-//
-
-// Bind an expression with left and right half, aware of selected content in the middle.
-function bind_left_right(shortcut, left, right){
-  bind_function( 
-	shortcut,
-    function(){
-	  let selected_text = view.state.sliceDoc( view.state.selection.main.from, view.state.selection.main.to );
-	  
-	  view.dispatch( view.state.replaceSelection( left + selected_text + right ) );
-	  
-	  
-/* 	  let cursor_pos = editor.getCursorPosition();
-	  
-	  let empty_selection = editor.selection.isEmpty();
-	  if ( empty_selection ){ // If selection is empty, (...)
-        editor.selection.selectWordRight(); // Try to select a word to the right. (...)
-		if (editor.getSelectedText().trim() == ''){ // If that fails (i.e., selected whitespace), (...)
-		  editor.moveCursorToPosition( cursor_pos ); // then reset cursor position and deselect.
-		  editor.selection.clearSelection();
-	    } 
-		else{
-		  empty_selection = false;
-		}
-	  }
-	  
-	  editor.insert( left + editor.getSelectedText() );
-	  cursor_pos = editor.getCursorPosition();
-	  editor.insert( right );
-	  // // Restore cursor position to between left and right content if there was no selection.
-	  // if( empty_selection ) { 
-	  editor.moveCursorToPosition( cursor_pos ); 
-	  // }; */
-	}
+    function(){ view.dispatch( view.state.replaceSelection(symbol) ); return(true); }
   );
 };
 
-// Bind a LaTeX command, like \srqt{}, separating left-right at the first { } or [ ] automatically.
+// Bind a command, like \srqt{}, separating left-right at the first { } or [ ] automatically.
 function bind_command( shortcut, command ){
-  // Regular expression to find the position of the first [ or { in command
-  let argpos = command.search("[\[{]");
-  let left = command.substring(0,argpos+1);
-  let right = command.substring(argpos+1);
-  bind_left_right(shortcut,left, right);
+  
+  let insert_pos = command.indexOf('%.%');
+  // If selection insertion point unmarked, mark by searching for first empty (i.e only whitespaces) curly or square brackets
+  if (insert_pos == -1){ 
+    curly = command.search( /(?<!\\){\s*(?<!\\)}/ );
+    square = command.search( /(?<!\\)\[\s*(?<!\\)\]/ );
+    if( curly != -1 ){
+      if( square != -1 ){ insert_pos = Math.min( curly, square ) + 1 }
+      else{ insert_pos = curly + 1};
+    } else{
+      if( square != -1 ){ insert_pos = square + 1 }
+      else{ insert_pos = command.length };
+    };
+    // Should probably come back to this treatment of whitespaces and adjust for tabs in multiline commands
+    whitespace_count = command.substring(insert_pos).match( /^\s*/ )[0].length
+    insert_pos = insert_pos + Math.trunc( whitespace_count / 2 )
+    command = command.substring( 0, insert_pos ) + '%.%' + command.substring( insert_pos );
+  }
+  
+  let keep_selection, selection_is_cursor, selection_from, selection_to;
+  
+  selection_from = command.indexOf('%|%');
+  keep_selection = (selection_from == -1);
+  
+  if( !keep_selection ){
+    selection_to = command.indexOf('%|%', selection_from+3);
+    selection_is_cursor = ( selection_to == -1 );
+    
+    if (!selection_is_cursor){
+      if( selection_to < insert_pos ){
+        insert_pos -= 3;
+      } else{ // selection_to > insert_pos ( == case never happens )
+        selection_to -= 3
+      }
+      selection_to -= 3 // Since selection_from always comes before it.
+    }
+    
+    if ( selection_from < insert_pos ){
+      insert_pos -= 3;
+
+    } else{ // selection_from > insert_pos ( == case never happens )
+      selection_from -= 3;
+    }
+  };
+
+  command = command.replaceAll('%|%', '').replace('%.%', '')
+  
+  bind_function( 
+    shortcut,
+    function(){
+      changes = view.state.changeByRange(
+        (range)=>{
+          let selected_text = view.state.sliceDoc( range.from, range.to );
+          
+          let end_range = range.extend( range.from, range.to ); // Initialize new range object
+          if( keep_selection ){
+            end_range.from += insert_pos;
+            end_range.to += insert_pos;
+          } else if (selection_is_cursor){
+            end_range.from += selection_from + ( insert_pos < selection_from ? selected_text.length : 0 );
+            end_range.to = end_range.from;
+          } else{
+            end_range.to = end_range.from + selection_to + ( insert_pos <= selection_to ? selected_text.length : 0 );
+            end_range.from += selection_from + ( insert_pos < selection_from ? selected_text.length : 0 );
+          }
+          return{
+            range: end_range, 
+            changes: [{from: range.from, insert: command.substring(0,insert_pos)}, {from: range.to, insert: command.substring(insert_pos)}]
+          }
+        }
+      );
+      view.dispatch( changes );
+      return(true);
+    }
+  )
 };
 
 function bind_environment( shortcut, environment){
-  bind_left_right( shortcut, "\\begin{"+environment+"}\n\t", "\n\\end{"+environment+"}\n" );
+  bind_command( shortcut, "\\begin{"+environment+"}\n\t%.%\n\\end{"+environment+"}\n" );
 };
 
 
@@ -108,11 +142,11 @@ function load_symbols( symbols ){
   };
 };
 
-function load_left_rights( left_rights ){
-  for (lr of left_rights){
-    bind_left_right( lr.shortcut, lr.left, lr.right );
-  };
-};
+// function load_left_rights( left_rights ){
+  // for (lr of left_rights){
+    // bind_left_right( lr.shortcut, lr.left, lr.right );
+  // };
+// };
 
 function load_commands( commands ){
   for (c of commands){
@@ -127,8 +161,9 @@ function load_envs( environments ){
 };
 
 function load_config( shortleaf_config ){
+  shortcuts = [];
 	load_symbols( shortleaf_config.symbols );
-	load_left_rights( shortleaf_config.left_rights );
+	// load_left_rights( shortleaf_config.left_rights );
 	load_commands( shortleaf_config.commands );
 	load_envs( shortleaf_config.environments );
 	

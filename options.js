@@ -77,52 +77,6 @@ function comm_form( s ){
 	return( f );
 };
 
-function lr_form( s ){
-	let f = document.createElement('form');
-		
-	let blank = document.createElement('span');
-	blank.className = 'blank';
-	f.appendChild(blank);
-	
-	let fname = document.createElement('input');
-	fname.className = 'name';
-	fname.type = 'text';
-	fname.defaultValue = s.name;
-	f.appendChild(fname);
-	
-	let fleft = document.createElement('input');
-	fleft.className = 'left';	
-	fleft.type = 'text';
-	fleft.defaultValue = s.left;
-	f.appendChild(fleft);
-	
-	let fright = document.createElement('input');
-	fright.className = 'right';	
-	fright.type = 'text';
-	fright.defaultValue = s.right;
-	f.appendChild(fright);
-	
-	let fshortcut = document.createElement('input');
-	fshortcut.className = 'shortcut';	
-	fshortcut.type = 'text';
-	fshortcut.defaultValue = s.shortcut;
-	f.appendChild(fshortcut);
-	
-	f.oninput = function(e){ update_shortleaf_config(); };
-	
-	let fremove = document.createElement('span')
-	fremove.className = 'remover';
-	fremove.innerHTML = 'X';
-	fremove.style = 'margin-left: 20px; margin-right: 20px;'
-	fremove.addEventListener( 'click', function(e){
-		this.parentElement.remove();
-		update_shortleaf_config();
-	} );
-	f.appendChild(fremove);
-	
-	return( f );
-};
-
 function env_form( s ){
 	let f = document.createElement('form');
 		
@@ -179,10 +133,10 @@ function read_div_forms(div){
 };
 
 function update_shortleaf_config(){
+  chrome.runtime.sendMessage( { message: 'A message' } );
 	
 	let symbols = read_div_forms( document.getElementById('symbols') );
 	let commands = read_div_forms( document.getElementById('commands') );
-	let left_rights = read_div_forms( document.getElementById('left_rights') );
 	let envs = read_div_forms( document.getElementById('envs') );
 	
 	chrome.storage.sync.set( { 
@@ -190,7 +144,6 @@ function update_shortleaf_config(){
 			{
 				'symbols': symbols,
 				'commands': commands,
-				'left_rights': left_rights,
 				'environments': envs
 			}
 	} );
@@ -262,26 +215,6 @@ window.addEventListener('load', () => {
 			commands_div.appendChild( document.createElement('br') );
 		}
 		
-		// Left-right's menu
-		{
-			let lr_div = document.getElementById('left_rights');
-			for (lr of shortleaf_config.left_rights){
-				lr_div.appendChild( lr_form(lr) );
-			};
-			let add = document.createElement('button')
-			add.innerHTML = 'Add new'
-			add.addEventListener("click", 
-				function(e){
-					this.parentElement.insertBefore( lr_form( {name: '', left: '', right: '', shortcut: ''} ), this );
-				}
-			);
-			lr_div.appendChild( add );
-			
-			lr_div.appendChild( document.createElement('br') );
-			lr_div.appendChild( document.createElement('hr') );
-			lr_div.appendChild( document.createElement('br') );
-		}
-		
 		// Environments menu
 		{
 			let env_div = document.getElementById('envs');
@@ -315,6 +248,5 @@ window.addEventListener('load', () => {
 	
 	document.getElementById('symbols_toggle').addEventListener( 'click', hide_toggle );
 	document.getElementById('commands_toggle').addEventListener( 'click', hide_toggle );
-	document.getElementById('left_rights_toggle').addEventListener( 'click', hide_toggle );
 	document.getElementById('envs_toggle').addEventListener( 'click', hide_toggle );
 });

@@ -41,25 +41,14 @@ var shortleaf_default_config = {
 		{"command": "\\infty"		, "shortcut": "Alt-8" }
 	],
 	"commands": [
-		{"command": "\\sqrt{}"		, "shortcut": "Ctrl-2" },
-		{"command": "\\frac{}{}"	, "shortcut": "Ctrl-\\" },
-		{"command": "_{}"			, "shortcut": "Ctrl--" },
-		{"command": "^{}"			, "shortcut": "Ctrl-6" },
+		{"command": "\\sqrt{}"		, "shortcut": "Alt-2" },
+		{"command": "\\frac{}{}"	, "shortcut": "Alt-\\" },
+		{"command": "_{}"			, "shortcut": "Alt-_" },
+		{"command": "^{}"			, "shortcut": "Alt-^" },
 		{"command": "\\dot{}"		, "shortcut": "Ctrl-Shift-." },
-		{"command": "\\hat{}"		, "shortcut": "Ctrl-Shift-6" }
-	],
-	"left_rights": [
-		{"left": "\\left("	, "right": "\\right)"	, "shortcut": "Alt-9" },
-		{"left": "``"		, "right": "''"			, "shortcut": "Alt-`" },
-	],
-	"left_rights1": [
-		{"name": "Parenthesis"		, "left": "("		, "right": ")"			, "shortcut": "(" },
-		{"name": "\\ parenthesis"	, "left": "\\left("	, "right": "\\right)"	, "shortcut": "Ctrl-9" },
-		{"name": "Single quotes"	, "left": "'"		, "right": "'" 			, "shortcut": "'" },
-		{"name": "Double quotes"	, "left": "``"		, "right": "''"			, "shortcut": "\"" },
-
-		{"name": "Derivative"			, "left": "\\frac{ \\mathrm{d} \\, "	, "right": " }{\\mathrm{d} \\, }"	, "shortcut": "Ctrl-;" },
-		{"name": "Partial derivative"	, "left": "\\frac{ \\partial \\, "		, "right": " }{\\partial \\, }"		, "shortcut": "Ctrl-," },
+		{"command": "\\hat{}"		, "shortcut": "Ctrl-^" },
+    {"command": "\\left(%.%\\right)", "shortcut": "Alt-(" },
+		{"command": "``%.%''" , "shortcut": "Alt-`" },
 	],
 	"environments": [
 		{"name": "Equation" 		, "env": "equation"		, "shortcut": "Ctrl-Shift-e"}
@@ -73,3 +62,9 @@ chrome.runtime.onInstalled.addListener(function (e){
 		chrome.tabs.create({url: '/options.html'});
 	};
 });
+
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender,sendResponse){
+    console.log('Message received');
+  });
