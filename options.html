@@ -1,7 +1,6 @@
 <html>
 <head>
   <title>Shortleaf options</title>
-  <script src='/default_config.js'></script>
   <script src='/options.js'></script>
   <link rel="stylesheet" href="/options.css">
 </head>
@@ -18,7 +17,7 @@
 <span id='symbols_toggle', class='toggle'>&#x25B6; Symbols</span>
 <span id='symbols' class='collapsable' style='display: none'>
 <br>
-<p>Symbols are commands without arguments that are inserted when the shortcut keys are pressed.</p>
+<p>Symbols are inserted at the selected location(s).</p>
 <p>(Name / Command / Shortcut)</p>
 <br>
 </span>
@@ -27,10 +26,16 @@
 <span id='commands_toggle', class='toggle'>&#x25B6; Commands</span>
 <div id='commands' class='collapsable' style='display: none'>
 <br>
-<p>Commands are latex functions with arguments that are inserted when the shortcut keys are pressed. 
-The smart insertion is aware of selections and will treat them as the first argument, encasing it inside the first auto-detected { brackets }. 
-If no selection is present but you're at the begging of a word, the same will happen with that word.
-Your cursor will be set to the end of the selection / inside of the first argument.</p> <br>
+<span class='help'>
+<p>Commands take the current selection as an argument.<sup class='help_icon'>?</sup></p>
+<span class='help_message'>
+<p>The smart insertion will by default auto-detect the first empty brackets (curly {} or square []) in the command as where to insert the selected text and keep that selection.
+For example, the Alt-\ command by default takes *selection* into \frac{*selection*}{}.
+Both of these behaviours can be customized separately. 
+The selection insertion point can be specified with %.%, which is replaced with the selected text, as in the Alt-( default command.
+The desired end selection can be bounded with %|%, or for an empty end selection (i.e. just an end cursor position), a single %|%.
+</p></span></span>
+<br>
 (Name / Command / Shortcut) </br><br>
 </div>
 
@@ -47,8 +52,7 @@ Your cursor will be set to the end of the selection / inside of the first argume
 
 <span id='footer' class='panel'>
 <center>
-<p>Please note you need to reload your open Overleaf tabs for any changes to take effect.</p>
-<p>This page can be opened again later by clicking the extension's icon.</p>
+<p>Changes are saved automatically. This page can be opened again later by clicking the extension's icon.</p>
 <button type='button' id='reset_config'>Reset to defaults</button>
 <br>
 </center>

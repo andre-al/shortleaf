@@ -2,16 +2,16 @@ body {
 	background-color: #138A48;
 	display: flex;
 	flex-direction: column;
-    place-items: center;
+  place-items: center;
 }
 
 .panel {
 	padding: 20px;
 	width: min(80%, 800px);
 	min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 	padding: 0px;
 	background-color: #FFFFFF;
 }
@@ -32,6 +32,7 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	place-items: center;
+  text-align: center;
 	/* width: 80%; */
 	/* margin: 0 auto; */
 }
@@ -81,4 +82,21 @@ form {
 	/* position: absolute; */
 	/* bottom: 50px; */
 	/* clear: both; */
+}
+
+.help{
+  flex-direction: column;
+	justify-content: center;
+	place-items: center;
+}
+
+.help .help_message{
+  visibility: hidden;
+  display: none;
+  text-align: justify;
+}
+
+.help:has(.help_icon:hover) .help_message{
+  visibility: visible;
+  display: flex;
 }
