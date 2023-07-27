@@ -63,8 +63,21 @@ chrome.runtime.onInstalled.addListener(function (e){
 	};
 });
 
+// Keeps connections to instances of the addon on overleaf tabs.
+// Used to send messages to update configs.
+var ports = [];
 
+// Listen to new or closed instances
+chrome.runtime.onConnect.addListener( 
+  (port)=>{ 
+    ports.push(port); 
+    port.onDisconnect.addListener( (p)=>{ports.pop(p);} ) 
+  });
+
+// Listens to update configs and fowards them to open tabs
 chrome.runtime.onMessage.addListener(
-  function(request, sender,sendResponse){
-    console.log('Message received');
+  function(request, sender, sendResponse){
+    for(port of ports){
+      port.postMessage(request);
+    }
   });

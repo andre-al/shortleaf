@@ -133,8 +133,6 @@ function read_div_forms(div){
 };
 
 function update_shortleaf_config(){
-  chrome.runtime.sendMessage( { message: 'A message' } );
-	
 	let symbols = read_div_forms( document.getElementById('symbols') );
 	let commands = read_div_forms( document.getElementById('commands') );
 	let envs = read_div_forms( document.getElementById('envs') );
@@ -147,6 +145,8 @@ function update_shortleaf_config(){
 				'environments': envs
 			}
 	} );
+  
+  chrome.runtime.sendMessage( { update_config: true } );
 };
 
 function hide_toggle(e){

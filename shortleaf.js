@@ -1,47 +1,12 @@
-// Get loaded Ace Editor
-// var editor = (document.querySelectorAll(".ace_editor")[0]).env.editor;
-//let editor = document.getElementsByClassName("ace_editor")[0].env.editor;
-
-
 // Get loaded CodeMirror editor view
 let view = document.querySelector('.cm-editor').querySelector(".cm-content").cmView.view
 
-// Identify object corresponding to keymap from config facets by the 'key' property
-let keymap;
-let facets = view.state.config.facets;
-facets_loop:
-  for (i of Object.keys(facets)){
-    let fcts = facets[i];
-    for (fct of fcts.values()){
-      if( Array.isArray( fct.value )){
-        for ( ff of fct.value ){
-          if( Object.keys( ff ).includes('key') ){
-            keymap = fct.facet;
-            break facets_loop;
-          };
-        };
-      };
-    };
-  };
+let shortcuts = [];
 
-
-// Define new compartment to hold keybindings by finding an old compartment,
-let old_compartment = view.state.config.compartments.keys().next();
-// Compartmenting an empty set of keymaps using the .of method of the old compartment
-let kb_compartment = old_compartment.value.of( keymap.of([]) );
-// And using the compartment constructor method to assign this task to a new compartment
-kb_compartment.compartment =  new old_compartment.value.constructor;
-delete old_compartment
-
-view.state.config.base.push( kb_compartment );
-kb_compartment = kb_compartment.compartment
-view.dispatch( { effects: [ kb_compartment.reconfigure( keymap.of([]) ) ] } );
-
-let shortcuts = []
-
-// Prebinds a function to a key shortcut. General function to be used by other specialized binding functions.
+// Prebinds (pending dispatch) a function to a key shortcut. 
+// General function to be used by other specialized binding functions.
 function bind_function(shortcut, func){
-  shortcuts.push( {key: shortcut, mac: shortcut.replace("Ctrl","Mod"), run: func} )
+  shortcuts.push( {key: shortcut.replace( /(ctrl|cmd)/i, 'mod' ), run: func} )
 };
 
 // Bind a symbol
@@ -142,12 +107,6 @@ function load_symbols( symbols ){
   };
 };
 
-// function load_left_rights( left_rights ){
-  // for (lr of left_rights){
-    // bind_left_right( lr.shortcut, lr.left, lr.right );
-  // };
-// };
-
 function load_commands( commands ){
   for (c of commands){
     bind_command( c.shortcut, c.command );
@@ -160,20 +119,63 @@ function load_envs( environments ){
   };
 };
 
-function load_config( shortleaf_config ){
-  shortcuts = [];
-	load_symbols( shortleaf_config.symbols );
-	// load_left_rights( shortleaf_config.left_rights );
-	load_commands( shortleaf_config.commands );
-	load_envs( shortleaf_config.environments );
-	
-	view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})
-};
 
-document.addEventListener('shortleaf_config_send', function (e) {
-  let shortleaf_config = e.detail.shortleaf_config;
+let configured = new Promise( (resolve)=>{ 
+  setInterval( 
+    () =>{ if( view.state.config.base.length > 0 ) resolve(true); }
+    , 100);
+});
+
+
+let load_config;
+
+let loader_prepared = configured.then( ()=>{
+
+  // Identify object corresponding to keymap from config facets by the 'key' property
+  let keymap;
+  let facets = view.state.config.facets;
+  facets_loop:
+    for (i of Object.keys(facets)){
+      let fcts = facets[i];
+      for (fct of fcts.values()){
+        if( Array.isArray( fct.value )){
+          for ( ff of fct.value ){
+            if( Object.keys( ff ).includes('key') ){
+              keymap = fct.facet;
+              break facets_loop;
+            };
+          };
+        };
+      };
+    };
+
+
+  // Define new compartment to hold keybindings by finding an old compartment,
+  let old_compartment = view.state.config.compartments.keys().next();
+  // Compartmenting an empty set of keymaps using the .of method of the old compartment
+  let kb_compartment = old_compartment.value.of( keymap.of([]) );
+  // And using the compartment constructor method to assign this task to a new compartment
+  kb_compartment.compartment =  new old_compartment.value.constructor;
+
+  view.state.config.base.push( kb_compartment );
+  kb_compartment = kb_compartment.compartment
+  view.dispatch( { effects: [ kb_compartment.reconfigure( keymap.of([]) ) ] } );
   
-  load_config( shortleaf_config );
+  load_config = function( shortleaf_config ){
+    shortcuts = [];
+    load_symbols( shortleaf_config.symbols );
+    load_commands( shortleaf_config.commands );
+    load_envs( shortleaf_config.environments );
+    
+    view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )}) 
+  };
 }); 
 
-document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
+let listeners_set = loader_prepared.then(
+  ()=>{  
+    document.addEventListener('shortleaf_config_send', (e)=>{   
+      load_config( e.detail.shortleaf_config );
+    }); 
+
+    document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
+} );
