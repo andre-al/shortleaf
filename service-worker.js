@@ -11,6 +11,11 @@ chrome.runtime.onInstalled.addListener(function (e){
   }
 });
 
+chrome.runtime.onMessage.addListener(
+  (msg)=>{
+    if(msg.open_options) chrome.tabs.create({url: '/options.html'});
+  });
+
 
 /*
 // Keeps connections to instances of the addon on overleaf tabs.

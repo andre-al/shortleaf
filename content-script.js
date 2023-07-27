@@ -12,6 +12,26 @@ window.addEventListener('load', function(){
     this.remove();
   };
   (document.head || document.documentElement).appendChild(s);
+  
+  // Add shortleaf config menu page
+  let toolbar_left = document.querySelector('.toolbar-left');
+  let div = document.createElement('div');
+  div.className = '.toolbar-item'
+  {
+    let a = document.createElement('a')
+    a.className = 'btn btn-full-height'
+    a.addEventListener( 'click', ()=>{ chrome.runtime.sendMessage({open_options: true}) } )
+    a.innerHTML = '<p class="toolbar-label">Shortleaf</p>'
+    div.appendChild(a)
+  }
+  toolbar_left.appendChild( div );
+  // div.innerHTML = `
+    // <a class="btn btn-full-height" href="/project">
+    // <button class='btn btn-full-height'>
+      // <p class="toolbar-label">Menu</p>
+    // </a>
+  // `
+  
 });
 
 
