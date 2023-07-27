@@ -7,10 +7,6 @@ async function reset_config(){
     });
 };
 
-chrome.runtime.onMessage.addListener( (msg)=>{
-  if( msg.reset_config ) reset_config();
-});
-
 function symb_form( s ){
 	let f = document.createElement('form');
 	
@@ -181,6 +177,7 @@ window.addEventListener('load', async () => {
   await chrome.storage.sync.get( { 'shortleaf_config': null } ).then(
 	  (data) => {
 		shortleaf_config = data.shortleaf_config;
+    // If no config set, set default ones
     if(shortleaf_config === null){
       reset_config();
       return;
