@@ -29,10 +29,18 @@ document.addEventListener( 'shortleaf_config_listen',
   () => { send_config();}
 );
 
+// Listen for changes to configurations
+chrome.storage.onChanged.addListener(
+  function( changes, area ){
+    if( area == 'sync' & changes.shortleaf_config.newValue !== null ){
+      send_config();
+    }
+  }
+)
 
-// Opens connection to listen to configuration updates
+
+/* // Opens connection to main service worker
 var port = chrome.runtime.connect();
-// Relay configuration updates to the injected instance
 port.onMessage.addListener( 
-  (msg)=>{ if(msg.update_config){send_config();} } 
-);
+  (msg)=>{} 
+); */

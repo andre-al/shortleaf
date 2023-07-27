@@ -1,3 +1,16 @@
+async function reset_config(){
+  await fetch( '/default-config.json' )
+    .then( (r)=>{ return r.json() } )
+    .then( (r)=>{ 
+      chrome.storage.sync.set( { shortleaf_config: r } ); 
+      window.location.reload();
+    });
+};
+
+chrome.runtime.onMessage.addListener( (msg)=>{
+  if( msg.reset_config ) reset_config();
+});
+
 function symb_form( s ){
 	let f = document.createElement('form');
 	
@@ -145,8 +158,6 @@ function update_shortleaf_config(){
 				'environments': envs
 			}
 	} );
-  
-  chrome.runtime.sendMessage( { update_config: true } );
 };
 
 function hide_toggle(e){
@@ -163,14 +174,17 @@ function hide_toggle(e){
 };
 
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
 	let shortleaf_config  = {};
 	
 	// Load configs from sync storage or default
-	chrome.storage.sync.get( 
-	  { 'shortleaf_config': {} }, 
-	  function(data){
+  await chrome.storage.sync.get( { 'shortleaf_config': null } ).then(
+	  (data) => {
 		shortleaf_config = data.shortleaf_config;
+    if(shortleaf_config === null){
+      reset_config();
+      return;
+    }
 		
 		let br = document.createElement('br');
 		
@@ -235,18 +249,13 @@ window.addEventListener('load', () => {
 			env_div.appendChild( document.createElement('br') );
 		}
 		
-	  } );
-	  
+	  });
+    
 	// Add functionality to reset config button
-	document.getElementById('reset_config').addEventListener("click",
-		function(){
-			chrome.storage.sync.set( { shortleaf_config: shortleaf_default_config } );
-			window.location.reload();
-			return false;
-		}
-	);
+	document.getElementById('reset_config').addEventListener("click", reset_config);
 	
 	document.getElementById('symbols_toggle').addEventListener( 'click', hide_toggle );
 	document.getElementById('commands_toggle').addEventListener( 'click', hide_toggle );
 	document.getElementById('envs_toggle').addEventListener( 'click', hide_toggle );
 });
+

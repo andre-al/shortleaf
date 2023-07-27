@@ -119,18 +119,14 @@ function load_envs( environments ){
   };
 };
 
-
+// Wait until editor configuration is loaded to bind to it
 let configured = new Promise( (resolve)=>{ 
   setInterval( 
     () =>{ if( view.state.config.base.length > 0 ) resolve(true); }
     , 100);
 });
 
-
-let load_config;
-
-let loader_prepared = configured.then( ()=>{
-
+let prepare = configured.then( ()=>{
   // Identify object corresponding to keymap from config facets by the 'key' property
   let keymap;
   let facets = view.state.config.facets;
@@ -161,21 +157,15 @@ let loader_prepared = configured.then( ()=>{
   kb_compartment = kb_compartment.compartment
   view.dispatch( { effects: [ kb_compartment.reconfigure( keymap.of([]) ) ] } );
   
-  load_config = function( shortleaf_config ){
+  document.addEventListener('shortleaf_config_send', (e)=>{   
+    let shortleaf_config = e.detail.shortleaf_config;
     shortcuts = [];
     load_symbols( shortleaf_config.symbols );
     load_commands( shortleaf_config.commands );
     load_envs( shortleaf_config.environments );
     
-    view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )}) 
-  };
+    view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})   
+  }); 
+
+  document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
 }); 
-
-let listeners_set = loader_prepared.then(
-  ()=>{  
-    document.addEventListener('shortleaf_config_send', (e)=>{   
-      load_config( e.detail.shortleaf_config );
-    }); 
-
-    document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
-} );
