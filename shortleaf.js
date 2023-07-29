@@ -1,5 +1,27 @@
+// Note to self: use this when the API changes to explore the new one
+// const dispatchEvent_original = EventTarget.prototype.dispatchEvent;
+// EventTarget.prototype.dispatchEvent = function (event) {
+    // console.log(event.type);
+    // dispatchEvent_original.apply(this, arguments);
+// };
+
 // Get loaded CodeMirror editor view
-let view = document.querySelector('.cm-editor').querySelector(".cm-content").cmView.view
+// let view = document.querySelector('.cm-editor').querySelector(".cm-content").cmView.view
+
+let cm, view, keymap;
+
+let get_editor = new Promise( 
+  (resolve) => { 
+    window.addEventListener( 'UNSTABLE_editor:extensions',
+      (e)=>{ 
+        console.log(e.detail);
+        cm = e.detail.CodeMirror;
+        view = cm.EditorView.findFromDOM(document);
+        keymap = cm.keymap;
+        resolve();
+    });
+  }
+)
 
 let shortcuts = [];
 
@@ -120,32 +142,14 @@ function load_envs( environments ){
 };
 
 // Wait until editor configuration is loaded to bind to it
-let configured = new Promise( (resolve)=>{ 
-  setInterval( 
-    () =>{ if( view.state.config.base.length > 0 ) resolve(true); }
+let configured = new Promise( async (resolve)=>{ 
+  await get_editor;
+  conf_interval = setInterval( 
+    () =>{ if( view.state.config.base.length > 0 ) resolve(true); clearInterval(conf_interval); }
     , 100);
 });
 
 let prepare = configured.then( ()=>{
-  // Identify object corresponding to keymap from config facets by the 'key' property
-  let keymap;
-  let facets = view.state.config.facets;
-  facets_loop:
-    for (i of Object.keys(facets)){
-      let fcts = facets[i];
-      for (fct of fcts.values()){
-        if( Array.isArray( fct.value )){
-          for ( ff of fct.value ){
-            if( Object.keys( ff ).includes('key') ){
-              keymap = fct.facet;
-              break facets_loop;
-            };
-          };
-        };
-      };
-    };
-
-
   // Define new compartment to hold keybindings by finding an old compartment,
   let old_compartment = view.state.config.compartments.keys().next();
   // Compartmenting an empty set of keymaps using the .of method of the old compartment
@@ -165,7 +169,7 @@ let prepare = configured.then( ()=>{
     load_envs( shortleaf_config.environments );
     
     view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})   
-  }); 
+  });
 
   document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
 }); 
