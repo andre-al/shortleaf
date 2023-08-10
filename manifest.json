@@ -16,7 +16,7 @@
     "js": ["content-script.js"]
   }],
   "web_accessible_resources": [ {
-    "resources": ["shortleaf.js", "popup.js", "options.js", "options.css", "default_config.json"],
+    "resources": ["shortleaf.js", "popup.js", "options.js", "options.css", "default_config.json", "*.png"],
     "matches": ["<all_urls>"]
   } ],
   "permissions": [

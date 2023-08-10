@@ -1,7 +1,22 @@
 // Injects 'shortleaf.js' and configs into the page
 // Necessary because a content script has no access to the page environment, with the Code Mirror editor instance.
 
-window.addEventListener('load', function(){
+// Shortleaf icon
+let icon_uri;
+let get_icon = new Promise( (resolve)=>{
+  fetch( chrome.runtime.getURL('/icon128.png' ) )
+  .then( (r)=>{ return r.blob() } )
+  .then( (r)=>{ 
+      const reader = new FileReader()
+      reader.onloadend = ()=>{
+        icon_uri = reader.result;
+        resolve()
+      }
+      reader.readAsDataURL(r)
+    })
+} )
+
+window.addEventListener('load', async function(){
   if ( location == 'https://www.overleaf.com/project' ) return; // Don't load on the project selection page
   if ( location.toString().search( /detached$/ ) != -1 ) return; // Don't load on detached PDF tab
   
@@ -16,13 +31,24 @@ window.addEventListener('load', function(){
   // Add shortleaf config menu page
   let toolbar_left = document.querySelector('.toolbar-left');
   let div = document.createElement('div');
-  div.className = '.toolbar-item'
+  div.className = 'toolbar-item'
   {
-    let a = document.createElement('a')
-    a.className = 'btn btn-full-height'
-    a.addEventListener( 'click', ()=>{ chrome.runtime.sendMessage({open_options: true}) } )
-    a.innerHTML = '<p class="toolbar-label">Shortleaf</p>'
-    div.appendChild(a)
+    let btn = document.createElement('button')
+    btn.className = 'btn btn-full-height'
+    btn.addEventListener( 'click', ()=>{ chrome.runtime.sendMessage({open_options: true}) } )
+    
+    let i = document.createElement('i')
+    i.className = 'fa'
+    i.style.height = '18px';
+    i.style.width = '18px';
+    
+    await get_icon;
+    i.style.background = 'url(' + icon_uri + ') 50%/contain no-repeat';
+    
+    btn.appendChild(i);    
+    btn.innerHTML += '<p class="toolbar-label">Shortleaf</p>'
+
+    div.appendChild(btn)
   }
   toolbar_left.appendChild( div );
 });
