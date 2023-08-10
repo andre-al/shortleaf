@@ -77,6 +77,21 @@ chrome.storage.onChanged.addListener(
   }
 )
 
+// 
+ document.addEventListener( 'keydown', (e) => {
+  if(e.key=='Dead'){
+    document.addEventListener( 'keydown',
+      e2=>{
+        if(e2.code == 'Space'){
+          const init = { code: e.code, key: e2.key, altKey: e.altKey, cancelable: true }
+          let newe = new KeyboardEvent( 'keydown', init );
+          if( ! e2.target.dispatchEvent( newe ) ) // Launch event with dead key replaced by its value.  
+            e2.preventDefault() // If event was handled, cancel further processing of keybind. Otherwise, revert to default.
+        }
+      },
+      {once: true} )
+  }
+})
 
 /* // Opens connection to main service worker
 var port = chrome.runtime.connect();
