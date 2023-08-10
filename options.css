@@ -8,6 +8,19 @@ body {
   min-height: 101%;
 }
 
+#title{
+  padding-bottom: 0.5rem;
+}
+
+#title-icon{
+  margin-bottom: -0.4rem;
+  content: '';
+  display: inline-block;
+  background: url('/icon128.png') 50%/contain no-repeat;
+  width: 2rem;
+  height: 2rem;
+}
+
 .panel {
   width: min(100%, 800px);
   display: flex;
@@ -80,7 +93,7 @@ form:has(.remover:hover){
 }
 
 form:has(input:focus), form:hover{
-  background-color: #e0e0e0;
+  background-color: #e0f0e0;
   &> .controls{
     opacity: 1;
   }
@@ -117,7 +130,7 @@ input{
   border: 1px solid #d0d0d0;
   outline: 0px;
   &:focus{
-    box-shadow: 0 0 0 0.1rem rgba(73, 83, 101,.25);
+    box-shadow: 0 0 0 0.1rem rgba(71, 161, 65,.4);
   }
 }
 
