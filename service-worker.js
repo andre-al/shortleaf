@@ -1,4 +1,4 @@
-// Set config variable to this if just installed, and open config page
+// Open config page if just installed or updated from 0.1.
 chrome.runtime.onInstalled.addListener(function (e){
   if(e.reason === 'install'){
     chrome.tabs.create({url: '/options.html'});

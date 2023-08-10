@@ -25,13 +25,6 @@ window.addEventListener('load', function(){
     div.appendChild(a)
   }
   toolbar_left.appendChild( div );
-  // div.innerHTML = `
-    // <a class="btn btn-full-height" href="/project">
-    // <button class='btn btn-full-height'>
-      // <p class="toolbar-label">Menu</p>
-    // </a>
-  // `
-  
 });
 
 
