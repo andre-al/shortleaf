@@ -7,44 +7,48 @@
 <body>
 
 <!-- <center> -->
-<span class='panel'>
+<!-- <div class='main'> -->
+<span class='panel' id='body'>
 
 
 <br>
 
-<center><p style='font-size: 16px'>Set your overleaf shortcuts</p></center>
+<center><p style='font-size: 16px; margin-bottom: 3rem;'>Set your overleaf shortcuts</p></center>
 <!-- <center> -->
 <span id='symbols_toggle', class='toggle'>&#x25B6; Symbols</span>
-<span id='symbols' class='collapsable' style='display: none'>
+<!-- <span id='symbols' class='collapsable' style='display: none'> -->
+<span id='symbols' class='collapsable collapsed'>
 <br>
 <p>Symbols are inserted at the selected location(s).</p>
-<p>(Name / Command / Shortcut)</p>
+<p>( Name / Command / Shortcut )</p>
 <br>
 </span>
 
 <br>
 <span id='commands_toggle', class='toggle'>&#x25B6; Commands</span>
-<div id='commands' class='collapsable' style='display: none'>
+<!-- <div id='commands' class='collapsable' style='display: none'> -->
+<div id='commands' class='collapsable collapsed'>
 <br>
 <span class='help'>
 <p>Commands take the current selection as an argument.<sup class='help_icon'>?</sup></p>
 <span class='help_message'>
 <p>The smart insertion will by default auto-detect the first empty brackets (curly {} or square []) in the command as where to insert the selected text and keep that selection.
-For example, the Alt-\ command by default takes *selection* into \frac{*selection*}{}.
+For example, the default Alt-\ command by default takes *selection* into \frac{*selection*}{}.
 Both of these behaviours can be customized separately. 
 The selection insertion point can be specified with %.%, which is replaced with the selected text, as in the Alt-( default command.
-The desired end selection can be bounded with %|%, or for an empty end selection (i.e. just an end cursor position), a single %|%.
+The desired end selection can be bounded with %|%, as in the Alt-` default command. For an empty end selection (i.e. a cursor position), one %|% suffices.
 </p></span></span>
 <br>
-(Name / Command / Shortcut) </br><br>
+( Name / Command / Shortcut ) </br><br>
 </div>
 
 <br>
 <span id='envs_toggle', class='toggle'>&#x25B6; Environments</span>
-<div id='envs' class='collapsable' style='display: none'>
+<!-- <div id='envs' class='collapsable' style='display: none'> -->
+<div id='envs' class='collapsable collapsed'>
 <br>
 <p>Smart insertion of enviroments.</p> <br>
-(Name / Environment / Shortcut) <br><br>
+( Name / Environment / Shortcut ) <br><br>
 </div>
 
 </span>
@@ -52,11 +56,12 @@ The desired end selection can be bounded with %|%, or for an empty end selection
 
 <span id='footer' class='panel'>
 <center>
-<p>Changes are saved automatically. This page can be opened again later by clicking the extension's icon.</p>
+<p>Changes are saved automatically.</p>
 <button type='button' id='reset_config'>Reset to defaults</button>
 <br>
 </center>
 </span>
+<!-- </div> -->
 
 </body>
 </html>

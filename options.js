@@ -7,6 +7,49 @@ async function reset_config(){
     });
 };
 
+function controls(){
+  let fcontrols = document.createElement('span');
+  fcontrols.className = 'controls';
+  
+  let fmoveup = document.createElement('span');
+  fmoveup.className = 'moveupper'
+  fmoveup.innerHTML = '&#x1F871;'
+  fmoveup.addEventListener( 'click', function(e){
+    entry = this.parentNode.parentNode;
+    prev_entry = entry.previousElementSibling;
+    if( prev_entry.tagName == 'FORM' ){
+      entry.after( prev_entry );
+      update_shortleaf_config();
+    }
+  } );
+  fcontrols.appendChild(fmoveup);
+  
+  let fmovedown = document.createElement('span');
+  fmovedown.className = 'movedowner'
+  fmovedown.innerHTML = '&#x1F873;'
+  fmovedown.addEventListener( 'click', function(e){
+    entry = this.parentNode.parentNode;
+    next_entry = entry.nextElementSibling;
+    if( next_entry.tagName == 'FORM' ){
+      next_entry.after( entry );
+      update_shortleaf_config();
+    }
+  } );
+  fcontrols.appendChild(fmovedown);
+  
+  
+  let fremove = document.createElement('span')
+	fremove.className = 'remover';
+	fremove.innerHTML = '&#x1F5D9;';
+	fremove.addEventListener( 'click', function(e){
+		this.parentNode.parentNode.remove();
+		update_shortleaf_config();
+	} );
+  
+  fcontrols.appendChild( fremove );
+  return fcontrols
+}
+
 function symb_form( s ){
 	let f = document.createElement('form');
 	
@@ -34,14 +77,8 @@ function symb_form( s ){
 	
 	f.oninput = function(e){ update_shortleaf_config(); };
 	
-	let fremove = document.createElement('span')
-	fremove.className = 'remover';
-	fremove.innerHTML = 'X';
-	fremove.addEventListener( 'click', function(e){
-		this.parentElement.remove();
-		update_shortleaf_config();
-	} );
-	f.appendChild(fremove);
+  let fcontrols = controls();
+  f.appendChild( fcontrols );
 	
 	return( f );
 };
@@ -73,15 +110,8 @@ function comm_form( s ){
 	
 	f.oninput = function(e){ update_shortleaf_config(); };
 	
-	let fremove = document.createElement('span')
-	fremove.className = 'remover';
-	fremove.innerHTML = 'X';
-	fremove.style = 'margin-left: 20px; margin-right: 20px;'
-	fremove.addEventListener( 'click', function(e){
-		this.parentElement.remove();
-		update_shortleaf_config();
-	} );
-	f.appendChild(fremove);
+  let fcontrols = controls();
+  f.appendChild( fcontrols );
 	
 	return( f );
 };
@@ -113,15 +143,8 @@ function env_form( s ){
 	
 	f.oninput = function(e){ update_shortleaf_config(); };
 	
-	let fremove = document.createElement('span')
-	fremove.className = 'remover';
-	fremove.innerHTML = 'X';
-	fremove.style = 'margin-left: 20px; margin-right: 20px;'
-	fremove.addEventListener( 'click', function(e){
-		this.parentElement.remove();
-		update_shortleaf_config();
-	} );
-	f.appendChild(fremove);
+  let fcontrols = controls();
+  f.appendChild( fcontrols );
 	
 	return( f );
 };
@@ -159,14 +182,13 @@ function update_shortleaf_config(){
 function hide_toggle(e){
 	let right_tri = String.fromCharCode( 9654 );
 	let down_tri = String.fromCharCode( 9660 );
-	
-	if( this.nextElementSibling.style.display === 'none' ){
-		this.innerHTML = this.innerHTML.replace( right_tri, down_tri );
-		this.nextElementSibling.style.display = 'flex';
-	} else {
-		this.innerHTML = this.innerHTML.replace( down_tri, right_tri );
-		this.nextElementSibling.style.display = 'none';
-	};
+  
+  this.innerHTML = this.innerHTML.replace( 
+    RegExp('[' + right_tri + '|' + down_tri + ']' ), 
+    ( match ) => { if(match == right_tri) return down_tri; else return right_tri; }
+  );
+  
+  this.nextElementSibling.classList.toggle( 'collapsed' );
 };
 
 
