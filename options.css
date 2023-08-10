@@ -1,23 +1,11 @@
 body {
-	background-color: #ffffff; /* #138A48; */
-	/* background-color: #495365; /* #138A48; */
+	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
   place-items: center;
   margin: 0px;
   padding-top: 2rem;
   min-height: 101%;
-}
-
-div.main {
-  min-height: 100%;
-  place-items: center;
-  border-radius: 0.3rem;
-	width: 80%;
-  display: flex;
-  flex-direction: column;
-  background-color: #FFFFFF;
-	padding: 0px;
 }
 
 .panel {

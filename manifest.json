@@ -1,7 +1,12 @@
 {
   "name": "Shortleaf",
   "description": "Custom keyboard shortcuts for Overleaf.",
-  "version": "0.2",
+  "version": "1.0",
+   "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "48": "icon48.png"
+   },
   "manifest_version": 3,
   "background": {
       "service_worker": "service-worker.js"
