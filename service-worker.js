@@ -8,6 +8,13 @@ chrome.runtime.onInstalled.addListener(function (e){
       chrome.storage.sync.remove( 'shortleaf_config' )
       chrome.tabs.create({url: '/options.html'});
     }
+    chrome.tabs.create({url: '/changelog.html'})
+      .then( tab => {
+      chrome.tabs.onUpdated.addListener( (id, chg)=>{
+        if(id == tab.id && chg.status === 'complete')
+          chrome.tabs.sendMessage( tab.id, {updated: true, previousVersion: e.previousVersion} ) 
+        })
+      });
   }
 });
 

@@ -1,0 +1,46 @@
+<html>
+<head>
+  <title>Shortleaf options</title>
+  <script src='/shortleaf_pages.js'></script>
+  <link rel="stylesheet" href="/shortleaf_pages.css">
+</head>
+<body>
+
+<span class='panel' id='body'>
+
+<br>
+
+<center>
+<p id='title' style='font-size: 20px; margin-bottom: 2rem; font-weight: bold;'> <i id='title-icon'></i>hortleaf</p>
+<p id='subtitle' style='font-size: 14px; margin-bottom: 2rem;'>Version update history</p></center>
+
+<span class='toggle'>&#x25BC; 1.0.1</span>
+<span class='collapsable'>
+<ul>
+  <li> New changelog page.
+  <li> Added compatibility to "dead keys" in international keyboard layouts, such as ~ in Spanish. <br>
+  Press the configured keybind (with modifiers, like alt) and then space (with no modifiers) to execute the shortcut. Otherwise, the key works as normally.
+</ul>
+</span>
+
+<br>
+
+<span class='toggle'>&#x25BC; 1.0</span>
+<span class='collapsable'>
+<ul>
+  <li> Unfortunately, this update required a configuration reset if coming from previous versions.
+  <li> Updated extension's internal functionality to work with Overleaf's new editor package, CodeMirror.
+  <li> Updated options page: new layout, reordering controls, automatically saves changes and reconfigures editors.
+  <li> Added button to options page from Overleaf editor.
+  <li> Fixed console errors when using PDF in separate tab.
+  <li> Reworked commands to have customizable selection insertion point and end selection bounds.
+  <li> Removed left-right type shortcuts, since the feature is redundant with the reworked commands.
+  <li> Shortcuts now work with uppercase characters, e.g. alt-P will produce \Pi with either shift-p or P (with Caps Lock).
+  <li> Shortcuts work in a more keyboard layout independent manner (e.g. alt-~ works instead of US-layout alt-shift-`).
+  <li> Insertion is now fully compatible with multiple selections/cursors.<br>
+  Try it! Hold control, make multiple selections with your mouse and insert many \sqrt{}'s at once by pressing alt-2.
+  <li> Changed default shortcuts.
+</ul>
+</span>
+
+</body>

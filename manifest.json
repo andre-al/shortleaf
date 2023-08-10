@@ -1,7 +1,7 @@
 {
   "name": "Shortleaf",
   "description": "Custom keyboard shortcuts for Overleaf.",
-  "version": "1.0",
+  "version": "1.0.1",
    "icons": {
       "128": "icon128.png",
       "16": "icon16.png",
@@ -16,7 +16,7 @@
     "js": ["content-script.js"]
   }],
   "web_accessible_resources": [ {
-    "resources": ["shortleaf.js", "popup.js", "options.js", "options.css", "default_config.json", "*.png"],
+    "resources": ["shortleaf.js", "popup.js", "shortleaf_pages.js", "shortleaf_pages.css", "default_config.json", "*.png"],
     "matches": ["<all_urls>"]
   } ],
   "permissions": [

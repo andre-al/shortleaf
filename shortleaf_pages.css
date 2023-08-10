@@ -1,0 +1,177 @@
+body {
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: column;
+  place-items: center;
+  margin: 0px;
+  padding-top: 2rem;
+  min-height: 101%;
+}
+
+#title{
+  padding-bottom: 0.5rem;
+}
+
+#title-icon{
+  margin-bottom: -0.4rem;
+  content: '';
+  display: inline-block;
+  background: url('/icon128.png') 50%/contain no-repeat;
+  width: 2rem;
+  height: 2rem;
+}
+
+.panel {
+  width: min(100%, 800px);
+  display: flex;
+  flex-direction: column;
+	padding: 0px;
+}
+
+.panel#body{
+  min-height: calc(90% - 100px);
+}
+
+.panel#footer {
+	height: 100px;
+}
+
+.toggle {
+	font-size: 18px;
+	margin-left: 10%;
+	cursor: pointer;
+}
+
+.center-content{
+  justify-content: center;
+	place-items: center;
+  text-align: center;
+}
+
+.collapsable {
+	margin: 0 10%;
+	width: 80%;
+  display: flex;
+	flex-direction: column;
+  overflow: hidden;
+  height: auto;
+  /* transition: flex ease-out 1s; */
+  /* flex: 1; */
+}
+
+.collapsable.collapsed{
+  /* flex: 0; */
+  display: none;
+}
+
+hr {
+	width: 98%
+}
+
+button {
+  border-radius: 0.3rem;
+  border: 1px solid #d0d0d0;
+	min-width: 100px;
+	margin: 5px;
+	cursor: pointer;
+  background-color: #f7f8f9;
+  transition: background-color ease 0.3s;
+  &:hover{
+    background-color: #e9ebee;
+  }
+}
+
+form{
+  margin: 0px;
+  padding: 0.3rem 0px;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  transition: all ease 0.3s;
+}
+
+form:has(.remover:hover){
+  background-color: #ffe0e0;
+}
+
+form:has(input:focus), form:hover{
+  background-color: #e0f0e0;
+  &> .controls{
+    opacity: 1;
+  }
+}
+
+.blank{
+  width: 3.5rem;
+}
+
+.controls{
+  opacity: 0;
+  min-width: 3.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  transition: all ease 0.3s;
+}
+
+.controls > span{
+  cursor: pointer;
+  margin-top: 0rem;
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+  max-height: 12px;
+}
+
+.controls > span.movedowner{
+  margin-top: 0.13rem;
+}
+ 
+input{
+  margin: 0px 0.2rem 0px 0.2rem;
+  border-radius: 0.3rem;
+  border: 1px solid #d0d0d0;
+  outline: 0px;
+  &:focus{
+    box-shadow: 0 0 0 0.1rem rgba(71, 161, 65,.4);
+  }
+}
+
+#symbols > form > input {
+	width: 100px;
+}
+
+#commands > form > input {
+	width: 120px;
+}
+
+#envs > form > input {
+	width: 100px;
+}
+
+#reset_config {
+	width: 120px;
+	height: 26px;
+}
+
+.help{
+  flex-direction: column;
+	justify-content: center;
+	place-items: center;
+}
+
+.help .help_icon{
+  cursor: help;
+}
+
+.help .help_message{
+  visibility: hidden;
+  display: none;
+  text-align: justify;
+  max-width: 100%;
+}
+
+.help:has(.help_icon:hover) .help_message{
+  visibility: visible;
+  display: flex;
+}
