@@ -1,56 +1,267 @@
 { 
 	"symbols": [
-		{"command": "\\alpha"		, "shortcut": "Alt-a" },
-		{"command": "\\beta"		, "shortcut": "Alt-b" },
-		{"command": "\\gamma"		, "shortcut": "Alt-g" },
-		{"command": "\\Gamma"		, "shortcut": "Shift-Alt-g" },
-		{"command": "\\delta"		, "shortcut": "Alt-d" },
-		{"command": "\\Delta"		, "shortcut": "Shift-d" },
-		{"command": "\\epsilon"		, "shortcut": "Alt-e" },
-		{"command": "\\Epsilon"		, "shortcut": "Shift-Alt-e" },
-		{"command": "\\zeta"		, "shortcut": "Alt-z" },
-		{"command": "\\Zeta"		, "shortcut": "Shift-Alt-z" },
-		{"command": "\\eta"			, "shortcut": "Alt-h" },
-		{"command": "\\theta"		, "shortcut": "Alt-o" },
-		{"command": "\\Theta"		, "shortcut": "Shift-Alt-o" },
-		{"command": "\\iota"		, "shortcut": "Alt-i" },
-		{"command": "\\kappa"		, "shortcut": "Alt-k" },
-		{"command": "\\lambda"		, "shortcut": "Alt-l" },
-		{"command": "\\Lambda"		, "shortcut": "Shift-Alt-l" },
-		{"command": "\\mu"			, "shortcut": "Alt-m" },
-		{"command": "\\nu"			, "shortcut": "Alt-n" },
-		{"command": "\\xi"			, "shortcut": "Alt-x" },
-		{"command": "\\Xi"			, "shortcut": "Shift-Alt-x" },
-		{"command": "\\pi"			, "shortcut": "Alt-p" },
-		{"command": "\\Pi"			, "shortcut": "Shift-Alt-p" },
-		{"command": "\\rho"			, "shortcut": "Alt-r" },
-		{"command": "\\sigma"		, "shortcut": "Alt-s" },
-		{"command": "\\Sigma"		, "shortcut": "Shift-Alt-s" },
-		{"command": "\\tau"			, "shortcut": "Alt-t" },
-		{"command": "\\upsilon"		, "shortcut": "Alt-u" },
-		{"command": "\\Upsilon"		, "shortcut": "Shift-Alt-u" },
-		{"command": "\\phi"			, "shortcut": "Alt-f" },
-		{"command": "\\Phi"			, "shortcut": "Shift-Alt-f" },
-		{"command": "\\chi"			, "shortcut": "Alt-c" },
-		{"command": "\\psi"			, "shortcut": "Alt-q" },
-		{"command": "\\Psi"			, "shortcut": "Shift-Alt-q" },
-		{"command": "\\omega"		, "shortcut": "Alt-w" },
-		{"command": "\\Omega"		, "shortcut": "Shift-Alt-w" },
-		{"command": "\\cdot"		, "shortcut": "Alt-." },
-		{"command": "\\approx"		, "shortcut": "Alt-~" },
-		{"command": "\\infty"		, "shortcut": "Alt-8" }
+		{
+      "name": "alpha", 
+      "command": "\\alpha", 
+      "shortcut": "alt-a" 
+    },
+		{
+      "name": "beta", 
+      "command": "\\beta", 
+      "shortcut": "alt-b" 
+    },
+		{
+      "name": "gamma", 
+      "command": "\\gamma", 
+      "shortcut": "alt-g" 
+    },
+		{
+      "name": "Gamma", 
+      "command": "\\Gamma",
+      "shortcut": "alt-G" 
+    },
+		{
+      "name": "delta", 
+      "command": "\\delta",
+      "shortcut": "alt-d" 
+    },
+		{
+      "name": "Delta",
+      "command": "\\Delta",
+      "shortcut": "shift-d" 
+    },
+		{
+      "name": "epsilon",
+      "command": "\\epsilon",
+      "shortcut": "alt-e" 
+    },
+		{
+      "name": "Epsilon",
+      "command": "\\Epsilon"
+      , "shortcut": "alt-E"
+    },
+		{
+      "name": "zeta",
+      "command": "\\zeta",
+      "shortcut": "alt-z" 
+    },
+		{
+      "name": "Zeta",
+      "command": "\\Zeta",
+      "shortcut": "alt-Z"
+    },
+		{
+      "name": "eta",
+      "command": "\\eta",
+      "shortcut": "alt-h" 
+    },
+		{
+      "name": "theta",
+      "command": "\\theta",
+      "shortcut": "alt-o" 
+    },
+		{
+      "name": "Theta",
+      "command": "\\Theta",
+      "shortcut": "alt-O" 
+    },
+		{
+      "name": "iota",
+      "command": "\\iota",
+      "shortcut": "alt-i" 
+    },
+		{
+      "name": "kappa",
+      "command": "\\kappa",
+      "shortcut": "alt-k" 
+    },
+		{
+      "name": "lambda",
+      "command": "\\lambda", 
+      "shortcut": "alt-v" 
+    },
+		{
+      "name": "Lambda",
+      "command": "\\Lambda",
+      "shortcut": "alt-V" 
+    },
+		{
+      "name": "mu",
+      "command": "\\mu",
+      "shortcut": "alt-m" 
+    },
+		{
+      "name": "nu",
+      "command": "\\nu",
+      "shortcut": "alt-n" 
+    },
+		{
+      "name": "xi",
+      "command": "\\xi",
+      "shortcut": "alt-x" 
+    },
+		{
+      "name": "Xi",
+      "command": "\\Xi", 
+      "shortcut": "alt-X" 
+    },
+		{
+      "name": "pi",
+      "command": "\\pi", 
+      "shortcut": "alt-p" 
+    },
+		{
+      "name": "Pi",
+      "command": "\\Pi", 
+      "shortcut": "alt-P" 
+    },
+		{
+      "name": "rho",
+      "command": "\\rho", 
+      "shortcut": "alt-r" 
+    },
+		{
+      "name": "sigma",
+      "command": "\\sigma", 
+      "shortcut": "alt-s" 
+    },
+		{
+      "name": "Sigma",
+      "command": "\\Sigma", 
+      "shortcut": "alt-S" 
+    },
+		{
+      "name": "tau",
+      "command": "\\tau", 
+      "shortcut": "alt-t" 
+    },
+		{
+      "name": "upsilon",
+      "command": "\\upsilon", 
+      "shortcut": "alt-y" 
+    },
+		{
+      "name": "Upsilon",
+      "command": "\\Upsilon", 
+      "shortcut": "alt-Y" 
+    },
+		{
+      "name": "phi",
+      "command": "\\phi", 
+      "shortcut": "alt-f" 
+    },
+		{
+      "name": "Phi",
+      "command": "\\Phi", 
+      "shortcut": "alt-F"
+    },
+		{
+      "name": "chi",
+      "command": "\\chi", 
+      "shortcut": "alt-c" 
+    },
+		{
+      "name": "psi",
+      "command": "\\psi",
+      "shortcut": "alt-q" 
+    },
+		{
+      "name": "Psi",
+      "command": "\\Psi", 
+      "shortcut": "alt-Q"
+    },
+		{
+      "name": "omega",
+      "command": "\\omega", 
+      "shortcut": "alt-w" 
+    },
+		{
+      "name": "Omega",
+      "command": "\\Omega",
+      "shortcut": "alt-W" },
+		{
+      "name": "center dot",
+      "command": "\\cdot", 
+      "shortcut": "alt-." 
+    },
+		{
+      "name": "approximately",
+      "command": "\\approx",
+      "shortcut": "alt-~" 
+    },
+		{
+      "name": "infinity",
+      "command": "\\infty",
+      "shortcut": "alt-8" 
+    }
 	],
 	"commands": [
-		{"command": "\\sqrt{}"		, "shortcut": "Alt-2" },
-		{"command": "\\frac{}{}"	, "shortcut": "Alt-\\" },
-		{"command": "_{}"			, "shortcut": "Alt-_" },
-		{"command": "^{}"			, "shortcut": "Alt-^" },
-		{"command": "\\dot{}"		, "shortcut": "Ctrl-Shift-." },
-		{"command": "\\hat{}"		, "shortcut": "Ctrl-^" },
-    {"command": "\\left(%.%\\right)", "shortcut": "Alt-(" },
-		{"command": "``%.%''" , "shortcut": "Alt-`" }
+		{
+      "name": "square root",
+      "command": "\\sqrt{}", 
+      "shortcut": "alt-2" 
+    },
+		{
+      "name": "fraction",
+      "command": "\\frac{}{}", 
+      "shortcut": "alt-\\" 
+    },
+		{
+      "name": "subscript",
+      "command": "_{}",
+      "shortcut": "alt-_" 
+    },
+		{
+      "name": "superscript",
+      "command": "^{}", 
+      "shortcut": "alt-^" 
+    },
+		{
+      "name": "dot",
+      "command": "\\dot{}",
+      "shortcut": "ctrl-shift-." 
+    },
+		{
+      "name": "hat",
+      "command": "\\hat{}",
+      "shortcut": "ctrl-^" 
+    },
+    {
+      "name": "parenthesis",
+      "command": "\\left(%.%\\right)", 
+      "shortcut": "alt-(" 
+    },
+		{
+      "name": "quotes",
+      "command": "%|%``%.%''%|%", 
+      "shortcut": "alt-`" 
+    }
 	],
 	"environments": [
-		{"name": "Equation" 		, "env": "equation"		, "shortcut": "Ctrl-Shift-e"}
+		{
+      "name": "equation", 
+      "env": "equation", 
+      "shortcut": "ctrl-alt-e"
+    },
+    {
+      "name": "equation*", 
+      "env": "equation*", 
+      "shortcut": "ctrl-alt-E"
+    },
+    {
+      "name": "align",
+      "env": "align", 
+      "shortcut": "ctrl-alt-a"
+    },
+    {
+      "name": "align*", 
+      "env": "align*", 
+      "shortcut": "ctrl-alt-A"
+    },
+    {
+      "name": "cases",
+      "env": "cases",
+      "shortcut": "ctrl-alt-c"
+    }
 	]
 }
