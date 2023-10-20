@@ -6,19 +6,30 @@
     // dispatchEvent_original.apply(this, arguments);
 // };
 
-let cm, view, keymap;
+let cm, view, keymap, kb_compartment;
 
-let get_editor = new Promise( 
+// Get the bindings for the codemirror API
+let get_codemirror = new Promise( 
   (resolve) => { 
     window.addEventListener( 'UNSTABLE_editor:extensions',
-      (e)=>{ 
+      (e)=>{
         cm = e.detail.CodeMirror;
-        view = cm.EditorView.findFromDOM(document);
         keymap = cm.keymap;
         resolve();
-    });
-  }
-)
+      }, {once: true});
+  });
+
+function get_view(){
+  return new Promise( async (resolve)=>{
+    await get_codemirror;
+    
+    view = cm.EditorView.findFromDOM(document);
+    // Check every 100ms if view is configured. Resolve promise when it is.
+    let conf_interval = setInterval( 
+      () =>{ if( view.state.config.base.length > 0 ) resolve(true); clearInterval(conf_interval); }
+      , 100);
+  });
+};
 
 let shortcuts = [];
 
@@ -141,36 +152,35 @@ function load_envs( environments ){
   };
 };
 
-// Wait until editor configuration is loaded to bind to it
-let configured = new Promise( async (resolve)=>{ 
-  await get_editor;
-  conf_interval = setInterval( 
-    () =>{ if( view.state.config.base.length > 0 ) resolve(true); clearInterval(conf_interval); }
-    , 100);
-});
+get_codemirror.then( ()=>{
+  let kb_compartment_load = get_view().then( ()=>{
+      // Define new compartment to hold keybindings by finding any old compartment,
+      let old_compartment = view.state.config.compartments.keys().next();
+      // Compartmenting an empty set of keymaps using the .of method of the old compartment
+      kb_compartment = old_compartment.value.of( keymap.of([]) );
+      // And using the compartment constructor method to assign this task to a new compartment
+      kb_compartment.compartment =  new old_compartment.value.constructor;
+    });
 
-let prepare = configured.then( ()=>{
-  // Define new compartment to hold keybindings by finding an old compartment,
-  let old_compartment = view.state.config.compartments.keys().next();
-  // Compartmenting an empty set of keymaps using the .of method of the old compartment
-  let kb_compartment = old_compartment.value.of( keymap.of([]) );
-  // And using the compartment constructor method to assign this task to a new compartment
-  kb_compartment.compartment =  new old_compartment.value.constructor;
-  
-  view.dispatch( {effects: cm.StateEffect.appendConfig.of( [ kb_compartment ] ) });
-  // view.state.config.base.push( kb_compartment );
-  kb_compartment = kb_compartment.compartment
-  // view.dispatch( { effects: [ kb_compartment.reconfigure( keymap.of([]) ) ] } );
-  
   document.addEventListener('shortleaf_config_send', (e)=>{   
     let shortleaf_config = e.detail.shortleaf_config;
     shortcuts = [];
     load_symbols( shortleaf_config.symbols );
     load_commands( shortleaf_config.commands );
     load_envs( shortleaf_config.environments );
-    
-    view.dispatch({effects: kb_compartment.reconfigure( keymap.of(shortcuts) )})   
+
+    view.dispatch( {effects: kb_compartment.compartment.reconfigure( keymap.of(shortcuts) )} ); 
   });
 
-  document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
-}); 
+  async function prepare_for_shortcuts(){
+      await get_view();
+      
+      await kb_compartment_load;
+      view.dispatch( {effects: cm.StateEffect.appendConfig.of( [ kb_compartment ] ) });
+
+      document.dispatchEvent(new CustomEvent('shortleaf_config_listen'));
+  };
+
+  prepare_for_shortcuts();
+  window.addEventListener( 'doc:after-opened', prepare_for_shortcuts );
+});

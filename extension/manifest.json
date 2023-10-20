@@ -1,7 +1,7 @@
 {
   "name": "Shortleaf",
   "description": "Custom keyboard shortcuts for Overleaf.",
-  "version": "1.0.1",
+  "version": "1.0.2",
    "icons": {
       "128": "icon128.png",
       "16": "icon16.png",
