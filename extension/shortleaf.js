@@ -5,8 +5,8 @@
     // console.log('Event detail: ', event.detail);
     // dispatchEvent_original.apply(this, arguments);
 // };
-
 let cm, view, keymap, kb_compartment;
+
 
 // Get the bindings for the codemirror API
 let get_codemirror = new Promise( 
@@ -151,6 +151,7 @@ function load_envs( environments ){
     bind_environment( e.shortcut, e.env );
   };
 };
+
 
 get_codemirror.then( ()=>{
   let kb_compartment_load = get_view().then( ()=>{

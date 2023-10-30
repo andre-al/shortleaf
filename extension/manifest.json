@@ -14,6 +14,10 @@
   "content_scripts": [{
     "matches": ["https://*.overleaf.com/project/*"],
     "js": ["content-script.js"]
+  },{
+    "matches": ["https://*.overleaf.com/project/*"],
+    "js": ["shortleaf.js"],
+    "world": "MAIN"
   }],
   "web_accessible_resources": [ {
     "resources": ["shortleaf.js", "popup.js", "shortleaf_pages.js", "shortleaf_pages.css", "default_config.json", "*.png"],
