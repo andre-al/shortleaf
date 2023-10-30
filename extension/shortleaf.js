@@ -6,6 +6,7 @@
     // dispatchEvent_original.apply(this, arguments);
 // };
 let cm, view, keymap, kb_compartment;
+let Prec = null;
 
 
 // Get the bindings for the codemirror API
@@ -161,6 +162,21 @@ get_codemirror.then( ()=>{
       kb_compartment = old_compartment.value.of( keymap.of([]) );
       // And using the compartment constructor method to assign this task to a new compartment
       kb_compartment.compartment =  new old_compartment.value.constructor;
+      
+      function get_Prec(a){
+        if( Array.isArray(a) ){
+          for( a_i of a.values() ){
+            get_Prec(a_i)
+            if( Prec !== null ) return;
+          }
+        } else{
+          if( "prec" in a ){
+            Prec = a.constructor;
+          }
+          return;
+        }
+      };
+      get_Prec( view.state.config.base );
     });
 
   document.addEventListener('shortleaf_config_send', (e)=>{   
@@ -170,7 +186,7 @@ get_codemirror.then( ()=>{
     load_commands( shortleaf_config.commands );
     load_envs( shortleaf_config.environments );
 
-    view.dispatch( {effects: kb_compartment.compartment.reconfigure( keymap.of(shortcuts) )} ); 
+    view.dispatch( {effects: kb_compartment.compartment.reconfigure( new Prec( keymap.of(shortcuts), 1 ) )} ); 
   });
 
   async function prepare_for_shortcuts(){
