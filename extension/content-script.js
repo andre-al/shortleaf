@@ -25,7 +25,7 @@ chrome.storage.onChanged.addListener(
 );
 
 
-window.addEventListener('load', function(){
+window.addEventListener('editor.openDoc', function(){
   if ( location == 'https://www.overleaf.com/project' ) return; // Don't load on the project selection page
   if ( location.toString().search( /detached$/ ) != -1 ) return; // Don't load on detached PDF tab
 
@@ -81,7 +81,7 @@ window.addEventListener('load', function(){
         {once: true} )
     }
   })
-});
+}, {once: true});
 
 /* // Opens connection to main service worker
 var port = chrome.runtime.connect();
